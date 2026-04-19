@@ -1,0 +1,63 @@
+@using Microsoft.AspNetCore.Components
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@code {
+    [Parameter]
+    public string? ImageName { get; set; }
+
+    [Parameter]
+    public string? Src { get; set; }
+
+    [Parameter]
+    public string? Alt { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "img-fluid responsive-image";
+
+    [Parameter]
+    public bool Lazy { get; set; } = true;
+
+    private string? finalSrc;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(Src))
+        {
+            finalSrc = Src;
+        }
+        else if (!string.IsNullOrEmpty(ImageName))
+        {
+            var prefix = Configuration["ImagePrefix"] ?? string.Empty;
+            // Build robust URL: if prefix already includes images/ or ends with '/', avoid duplicating
+            if (prefix.EndsWith("images/", StringComparison.OrdinalIgnoreCase))
+            {
+                finalSrc = prefix + ImageName;
+            }
+            else if (prefix.EndsWith("/"))
+            {
+                finalSrc = prefix + ImageName;
+            }
+            else if (!string.IsNullOrEmpty(prefix))
+            {
+                finalSrc = prefix + "/images/" + ImageName;
+            }
+            else
+            {
+                finalSrc = "images/" + ImageName;
+            }
+        }
+        else
+        {
+            finalSrc = string.Empty;
+        }
+    }
+}
+
+@if (!string.IsNullOrEmpty(finalSrc))
+{
+    <img src="@finalSrc" alt="@Alt" class="@Class" loading="@(Lazy ? "lazy" : "eager")" decoding="async" />
+}
+else
+{
+    <div class="responsive-image placeholder">画像なし</div>
+}

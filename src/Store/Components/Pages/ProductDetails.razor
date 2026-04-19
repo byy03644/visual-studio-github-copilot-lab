@@ -1,0 +1,74 @@
+@page "/product/{id:int}"
+@using Microsoft.AspNetCore.Components
+@using DataEntities
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject Store.Services.ProductService ProductService
+@rendermode InteractiveServer
+@attribute [StreamRendering(true)]
+
+<div class="container my-4">
+    @if (isLoading)
+    {
+        <p>読み込み中...</p>
+    }
+    else if (Product == null)
+    {
+        <div class="alert alert-warning">商品が見つかりません。</div>
+        <a class="btn btn-secondary" href="/products">商品一覧に戻る</a>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Large product image -->
+                <ResponsiveImage Src="@(Configuration["ImagePrefix"] + Product.ImageUrl)" Alt="@Product.Name" />
+            </div>
+            <div class="col-md-6">
+                <h1>@Product.Name</h1>
+                <h4 class="text-muted">$@Product.Price.ToString("0.00")</h4>
+                <p>@Product.Description</p>
+
+                <button class="btn btn-primary me-2" @onclick="AddToCart">カートに入れる</button>
+                <a class="btn btn-secondary" href="/products">商品一覧に戻る</a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private Product? Product;
+    private bool isLoading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        try
+        {
+            Product = await ProductService.GetProductById(id);
+        }
+        catch
+        {
+            Product = null;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void AddToCart()
+    {
+        // TODO: implement add to cart flow
+    }
+
+    private void NavigateHome()
+    {
+        NavigationManager.NavigateTo("/products");
+    }
+
+    // Using DataEntities.Product
+}

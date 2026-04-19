@@ -3,6 +3,7 @@
 @using Store.Services
 @inject IConfiguration Configuration
 @inject ProductService ProductService
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @attribute [StreamRendering(true)]
 
@@ -28,22 +29,24 @@ else
     <div class="products-grid">
         @foreach (var product in products)
         {
-            <article class="product-card">
-                <div class="image-wrap">
-                    @if (!string.IsNullOrEmpty(product.ImageUrl))
-                    {
-                        <img src="@(imagePrefix + product.ImageUrl)" class="product-image" alt="@product.Name" />
-                    }
-                    else
-                    {
-                        <div class="product-no-image">No image</div>
-                    }
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title" title="@product.Name">@product.Name</h3>
-                    <div class="product-price">$@product.Price.ToString("0.00")</div>
-                </div>
-            </article>
+            <NavLink class="product-link" href="@($"/product/{product.Id}")">
+                <article class="product-card">
+                    <div class="image-wrap">
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                        {
+                            <img src="@(imagePrefix + product.ImageUrl)" class="product-image" alt="@product.Name" />
+                        }
+                        else
+                        {
+                            <div class="product-no-image">No image</div>
+                        }
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title" title="@product.Name">@product.Name</h3>
+                        <div class="product-price">$@product.Price.ToString("0.00")</div>
+                    </div>
+                </article>
+            </NavLink>
         }
     </div>
 }
@@ -57,5 +60,7 @@ else
         imagePrefix = Configuration["ImagePrefix"]!;
         products = await ProductService.GetProducts();
     }
+
+
 
 }

@@ -1,0 +1,84 @@
+:root {
+  /* Light theme defaults */
+  --bg-color: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-color: #0f1720;
+  --accent-color: #0071c1;
+  --highlight-color: #e94560;
+  --nav-bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 0 rgba(13,38,59,0.04), 0 8px 22px rgba(13,38,59,0.06);
+  --transition-duration: 250ms;
+}
+
+/* Dark theme - use attribute on html: data-theme="dark" */
+:root[data-theme="dark"] {
+  --bg-color: #1a1a2e;
+  --bg-secondary: #16213e;
+  --text-color: #eaeaea;
+  --accent-color: #0f3460;
+  --highlight-color: #e94560;
+  --nav-bg: #16213e;
+  --card-bg: #1f2233;
+  --card-shadow: 0 8px 22px rgba(0,0,0,0.55);
+}
+
+/* Smooth transitions */
+:root, html, body, .page, .navbar, .product-card, .product-image, .nav-scrollable, .content {
+  transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease, border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
+}
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.page {
+  background-color: var(--bg-color);
+}
+
+.top-row, .navbar, .navbar-brand {
+  background-color: var(--nav-bg) !important;
+  color: var(--text-color) !important;
+}
+
+a, .btn-link {
+  color: var(--accent-color);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: color-mix(in srgb, var(--accent-color) 80%, black 20%);
+  color: var(--text-color);
+}
+
+.product-card {
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.image-wrap {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card-bg) 90%, white 10%), var(--bg-secondary));
+}
+
+.product-title, .product-no-image, .content, .nav-link {
+  color: var(--text-color);
+}
+
+.product-price {
+  color: var(--accent-color);
+}
+
+.theme-toggle { background: transparent; border: none; color: var(--text-color); }
+.theme-toggle .bi { font-size: 1.15rem; }
+
+/* Icon swap: show sun in light, moon in dark */
+.theme-toggle .bi-sun { display: inline; }
+:root[data-theme="dark"] .theme-toggle .bi-sun { display: none; }
+.theme-toggle .bi-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .bi-moon { display: inline; }
+
+/* accessibility: reduce-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root, html, body, .page, .navbar, .product-card, .product-image { transition: none !important; }
+}

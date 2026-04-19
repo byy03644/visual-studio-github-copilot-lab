@@ -3,12 +3,49 @@
     cursor: pointer;
     width: 3.5rem;
     height: 2.5rem;
-    color: white;
+    color: var(--text-color, white);
     position: absolute;
     top: 0.5rem;
     right: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+    appearance: none;
+    position: absolute;
+    top: 0.5rem;
+    right: 4.25rem; /* leave room for the menu toggle */
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 0;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.theme-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+    margin: 0 0.15rem;
+    display: inline-block;
+}
+
+/* Show sun in light, moon in dark */
+.theme-icon-sun { display: inline-block; }
+:root[data-theme="dark"] .theme-icon-sun { display: none; }
+.theme-icon-moon { display: none; }
+:root[data-theme="dark"] .theme-icon-moon { display: inline-block; }
+
+/* Ensure toggle icons use theme text color even if bootstrap .navbar-dark applies stronger rules */
+.top-row .theme-toggle,
+.top-row .theme-toggle .theme-icon {
+    color: var(--text-color, #0f1720) !important;
 }
 
 .navbar-toggler:checked {

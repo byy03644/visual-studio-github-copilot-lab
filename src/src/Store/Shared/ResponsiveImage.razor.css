@@ -1,0 +1,14 @@
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.responsive-image.placeholder {
+  background-color: #f5f5f5;
+  color: #888;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 4px;
+}
